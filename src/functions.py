@@ -71,8 +71,8 @@ def mask_amount_number(list_transaction_: list[dict]) -> list[dict]:
     """
     mask_check_number_list = []
     for i in list_transaction_:
-        value = i.get('to')
-        if value:
+        if 'to' in i:
+            value = i['to']
             number = str(value.split(' ')[-1])
             name_transfer = str(' '.join(value.split(' ')[:-1]))
             name_transfer_and_number = '**' + number[-4:]
@@ -110,11 +110,9 @@ def transfer_date(bloc: list[dict]) -> list[dict]:
     :return: возвращает измененный список
     """
     data_list = []
-    for i in number_bloc(bloc):
-        value = i.get('date')
-        if value:
-            i['date'] = (datetime.strptime(i['date'], "%Y-%m-%dT%H:%M:%S.%f")).strftime("%d.%m.%Y")
-            data_list.append(i)
-        else:
+    for i in bloc:
+        if 'date' in i and i['date']:
+            value = i['date']
+            i['date'] = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f').strftime('%d.%m.%Y')
             data_list.append(i)
     return data_list
